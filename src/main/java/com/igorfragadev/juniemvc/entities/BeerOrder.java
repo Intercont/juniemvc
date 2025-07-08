@@ -1,5 +1,6 @@
 package com.igorfragadev.juniemvc.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -27,8 +28,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@jakarta.persistence.Table(name = "beer")
-public class Beer {
+@jakarta.persistence.Table(name = "beer_order")
+public class BeerOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,11 +38,12 @@ public class Beer {
     @Version
     private Integer version;
 
-    private String beerName;
-    private String beerStyle;
-    private String upc;
-    private Integer quantityOnHand;
-    private BigDecimal price;
+    private String customerRef;
+
+    @Column(precision = 19, scale = 2)
+    private BigDecimal paymentAmount;
+
+    private String status;
 
     @CreationTimestamp
     @Column(updatable = false)
@@ -50,7 +52,13 @@ public class Beer {
     @UpdateTimestamp
     private LocalDateTime updatedDate;
 
-    @OneToMany(mappedBy = "beer", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "beerOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private List<BeerOrderLine> beerOrderLines = new ArrayList<>();
+
+    // Helper method to maintain bidirectional relationship
+    public void addBeerOrderLine(BeerOrderLine beerOrderLine) {
+        beerOrderLines.add(beerOrderLine);
+        beerOrderLine.setBeerOrder(this);
+    }
 }

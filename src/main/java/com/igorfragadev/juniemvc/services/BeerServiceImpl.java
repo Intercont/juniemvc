@@ -5,6 +5,7 @@ import com.igorfragadev.juniemvc.mappers.BeerMapper;
 import com.igorfragadev.juniemvc.models.BeerDto;
 import com.igorfragadev.juniemvc.repositories.BeerRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +23,7 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<BeerDto> getAllBeers() {
         return beerRepository.findAll().stream()
                 .map(beerMapper::beerToBeerDto)
@@ -29,12 +31,14 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<BeerDto> getBeerById(Integer id) {
         return beerRepository.findById(id)
                 .map(beerMapper::beerToBeerDto);
     }
 
     @Override
+    @Transactional
     public BeerDto saveBeer(BeerDto beerDto) {
         Beer beer = beerMapper.beerDtoToBeer(beerDto);
         Beer savedBeer = beerRepository.save(beer);
@@ -42,6 +46,7 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
+    @Transactional
     public Optional<BeerDto> updateBeer(Integer id, BeerDto beerDto) {
         return beerRepository.findById(id)
                 .map(existingBeer -> {
@@ -57,6 +62,7 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
+    @Transactional
     public boolean deleteBeer(Integer id) {
         if (beerRepository.existsById(id)) {
             beerRepository.deleteById(id);
