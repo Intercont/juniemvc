@@ -28,6 +28,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
+@jakarta.persistence.Table(name = "beer_order")
 public class BeerOrder {
 
     @Id

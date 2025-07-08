@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
+@jakarta.persistence.Table(name = "beer_order_line")
 public class BeerOrderLine {
 
     @Id
