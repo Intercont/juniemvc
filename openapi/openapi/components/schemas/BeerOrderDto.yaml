@@ -1,0 +1,52 @@
+type: object
+description: "Data Transfer Object representing a beer order"
+required:
+  - customerRef
+  - paymentAmount
+properties:
+  id:
+    description: "Unique identifier for the order"
+    type: integer
+    format: int32
+    readOnly: true
+    example: 1
+  version:
+    description: "Version number for optimistic locking"
+    type: integer
+    format: int32
+    readOnly: true
+    example: 1
+  customerRef:
+    description: "Customer reference for the order"
+    type: string
+    minLength: 1
+    example: "CUST-123"
+  paymentAmount:
+    description: "Amount paid for the order"
+    type: number
+    format: decimal
+    minimum: 0.01
+    example: 59.99
+  status:
+    description: "Status of the order"
+    type: string
+    example: "NEW"
+    nullable: true
+  createdDate:
+    description: "Date and time when the order was created"
+    type: string
+    format: date-time
+    readOnly: true
+    example: "2023-01-15T12:00:00Z"
+  updatedDate:
+    description: "Date and time when the order was last updated"
+    type: string
+    format: date-time
+    readOnly: true
+    example: "2023-01-20T15:30:00Z"
+  beerOrderLines:
+    description: "Line items in the order"
+    type: array
+    items:
+      $ref: './BeerOrderLineDto.yaml'
+    default: []

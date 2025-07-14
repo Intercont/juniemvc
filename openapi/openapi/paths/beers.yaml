@@ -1,0 +1,96 @@
+get:
+  tags:
+    - Beer
+  summary: Get all beers
+  description: "Returns a list of all beers in the system."
+  operationId: getAllBeers
+  security:
+    - api_key: []
+  responses:
+    '200':
+      description: "Successfully retrieved the list of beers"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../components/schemas/BeerDto.yaml'
+          example:
+            - id: 1
+              version: 1
+              beerName: "Mango Bobs"
+              beerStyle: "IPA"
+              upc: "0631234200036"
+              quantityOnHand: 122
+              price: 12.99
+              createdDate: "2023-01-15T12:00:00Z"
+              updatedDate: "2023-01-20T15:30:00Z"
+            - id: 2
+              version: 1
+              beerName: "Galaxy Cat"
+              beerStyle: "PALE_ALE"
+              upc: "0631234300019"
+              quantityOnHand: 392
+              price: 11.99
+              createdDate: "2023-01-16T10:00:00Z"
+              updatedDate: "2023-01-21T14:30:00Z"
+    '400':
+      description: "Bad request"
+    '401':
+      description: "Unauthorized"
+
+post:
+  tags:
+    - Beer
+  summary: Create a new beer
+  description: "Creates a new beer in the system."
+  operationId: createBeer
+  security:
+    - api_key: []
+  requestBody:
+    description: "Beer object to be created"
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/BeerDto.yaml'
+        example:
+          beerName: "Mango Bobs"
+          beerStyle: "IPA"
+          upc: "0631234200036"
+          quantityOnHand: 122
+          price: 12.99
+  responses:
+    '201':
+      description: "Successfully created a new beer"
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/BeerDto.yaml'
+          example:
+            id: 1
+            version: 1
+            beerName: "Mango Bobs"
+            beerStyle: "IPA"
+            upc: "0631234200036"
+            quantityOnHand: 122
+            price: 12.99
+            createdDate: "2023-01-15T12:00:00Z"
+            updatedDate: "2023-01-15T12:00:00Z"
+    '400':
+      description: "Invalid beer data provided"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Validation failed"
+              errors:
+                type: array
+                items:
+                  type: string
+                example: ["Beer name is required", "Price must be positive"]
+    '401':
+      description: "Unauthorized"
