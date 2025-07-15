@@ -16,7 +16,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class BeerOrderLineDto {
+    //read only
     private Integer id;
+    //read only
     private Integer version;
     
     @NotNull(message = "Beer ID is required")
@@ -28,7 +30,10 @@ public class BeerOrderLineDto {
     
     private Integer quantityAllocated;
     private String status;
+
+    //read only
     private LocalDateTime createdDate;
+    //read only
     private LocalDateTime updatedDate;
     
     // Optional: Include beer details for display purposes

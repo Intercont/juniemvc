@@ -1,57 +1,57 @@
 type: object
-description: "Data Transfer Object representing a line item in a beer order"
+description: "Data Transfer Object representing a line item in a beer order, specifying the beer and quantity ordered"
 required:
   - beerId
   - orderQuantity
 properties:
   id:
-    description: "Unique identifier for the order line"
+    description: "Unique identifier for the order line (read-only)"
     type: integer
     format: int32
     readOnly: true
     example: 1
   version:
-    description: "Version number for optimistic locking"
+    description: "Version number for optimistic locking (read-only)"
     type: integer
     format: int32
     readOnly: true
     example: 1
   beerId:
-    description: "ID of the beer being ordered"
+    description: "ID of the beer being ordered (required)"
     type: integer
     format: int32
     example: 123
   orderQuantity:
-    description: "Quantity of beer ordered"
+    description: "Quantity of beer ordered (required, must be positive)"
     type: integer
     format: int32
     minimum: 1
     example: 6
   quantityAllocated:
-    description: "Quantity of beer allocated from inventory"
-    type: integer
+    description: "Quantity of beer allocated from inventory (optional)"
+    type: [integer, "null"]
     format: int32
     minimum: 0
     example: 6
-    nullable: true
   status:
-    description: "Status of the order line"
-    type: string
+    description: "Status of the order line (e.g., NEW, ALLOCATED, PICKED_UP, DELIVERED)"
+    type: [string, "null"]
     example: "ALLOCATED"
-    nullable: true
+    enum: ["NEW", "ALLOCATED", "PICKED_UP", "DELIVERED"]
   createdDate:
-    description: "Date and time when the order line was created"
+    description: "Date and time when the order line was created (read-only)"
     type: string
     format: date-time
     readOnly: true
     example: "2023-01-15T12:00:00Z"
   updatedDate:
-    description: "Date and time when the order line was last updated"
+    description: "Date and time when the order line was last updated (read-only)"
     type: string
     format: date-time
     readOnly: true
     example: "2023-01-20T15:30:00Z"
   beer:
-    description: "Optional beer details for display purposes"
-    $ref: './BeerDto.yaml'
-    nullable: true
+    description: "Optional beer details for display purposes (includes name, style, price, etc.)"
+    oneOf:
+      - $ref: './BeerDto.yaml'
+      - type: "null"

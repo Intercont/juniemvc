@@ -1,51 +1,51 @@
 type: object
-description: "Data Transfer Object representing a beer order"
+description: "Data Transfer Object representing a beer order with customer reference, payment details, and line items"
 required:
   - customerRef
   - paymentAmount
 properties:
   id:
-    description: "Unique identifier for the order"
+    description: "Unique identifier for the order (read-only)"
     type: integer
     format: int32
     readOnly: true
     example: 1
   version:
-    description: "Version number for optimistic locking"
+    description: "Version number for optimistic locking (read-only)"
     type: integer
     format: int32
     readOnly: true
     example: 1
   customerRef:
-    description: "Customer reference for the order"
+    description: "Customer reference for the order (required, cannot be blank)"
     type: string
     minLength: 1
     example: "CUST-123"
   paymentAmount:
-    description: "Amount paid for the order"
+    description: "Amount paid for the order in currency units (required, must be positive)"
     type: number
     format: decimal
     minimum: 0.01
     example: 59.99
   status:
-    description: "Status of the order"
-    type: string
+    description: "Current status of the order (e.g., NEW, PROCESSING, COMPLETED, CANCELLED)"
+    type: [string, "null"]
     example: "NEW"
-    nullable: true
+    enum: ["NEW", "PROCESSING", "COMPLETED", "CANCELLED"]
   createdDate:
-    description: "Date and time when the order was created"
+    description: "Date and time when the order was created (read-only)"
     type: string
     format: date-time
     readOnly: true
     example: "2023-01-15T12:00:00Z"
   updatedDate:
-    description: "Date and time when the order was last updated"
+    description: "Date and time when the order was last updated (read-only)"
     type: string
     format: date-time
     readOnly: true
     example: "2023-01-20T15:30:00Z"
   beerOrderLines:
-    description: "Line items in the order"
+    description: "Line items in the order, each representing a specific beer and quantity"
     type: array
     items:
       $ref: './BeerOrderLineDto.yaml'
