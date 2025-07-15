@@ -195,3 +195,54 @@ logger.atDebug()
 * **Version control for your database:** Migration scripts are versioned and applied in order, providing a clear history of how your database schema has evolved over time.
 * **Automatic application:** When integrated with Spring Boot, Flyway automatically applies pending migrations on application startup, keeping your database schema in sync with your application code.
 * **Repeatable migrations:** For scripts that should be re-applied whenever they change (like views or stored procedures), use the `R__` prefix instead of `V__` (e.g., `R__create_views.sql`).
+
+## 16. OpenAPI Specification Guidelines
+* Use OpenAPI Specification (OAS) to document your REST APIs in a standardized, machine-readable format.
+* Organize your API documentation using file references to maintain a clean and modular structure.
+* Follow consistent naming conventions for files and components.
+* Validate your OpenAPI specification regularly using the provided testing tools.
+
+**API Documentation Structure:**
+
+* **Main OpenAPI File:** The root file (`openapi.yaml`) contains the API metadata, server configurations, and references to path and component files.
+* **Modular Organization:** The specification is split into multiple files for better maintainability:
+  * Path operation files are stored in the `paths/` directory
+  * Component schemas are stored in the `components/schemas/` directory
+  * Responses are stored in the `components/responses/` directory
+  * Other reusable components (headers, parameters, etc.) have their respective directories
+
+**File Naming Conventions:**
+
+* **Path Operation Files:** Named after the API path they represent, with path parameters enclosed in curly braces:
+  * Example: `/users/{username}` path is defined in `paths/users_{username}.yaml`
+  * Example: `/user/list` path is defined in `paths/user-status.yaml`
+* **Component Files:** Named after the component they define, using PascalCase for schemas:
+  * Example: User schema is defined in `components/schemas/User.yaml`
+  * Example: Problem response is defined in `components/responses/Problem.yaml`
+
+**Component Definitions:**
+
+* **Schemas:** Define data models in separate files under `components/schemas/`:
+  * Use `$ref` to reference other schemas (e.g., `$ref: './Email.yaml'`)
+  * Use discriminators for polymorphic schemas (e.g., different user types)
+* **Responses:** Define reusable responses in separate files under `components/responses/`:
+  * Reference them in path operations using `$ref: '../components/responses/Problem.yaml'`
+* **Parameters, Headers, etc.:** Define other reusable components in their respective directories and reference them as needed.
+
+**Testing the OpenAPI Specification:**
+
+* Navigate to the `openapi` directory: `cd openapi`
+* Run the linting tool to validate the specification: `npm test`
+  * This executes `redocly lint` which checks for errors and inconsistencies
+* Preview the documentation locally: `npm start`
+  * This runs `redocly preview-docs` which serves the documentation on a local web server
+* Bundle the specification into a single file: `npm run build`
+  * This creates a bundled specification in `dist/bundle.yaml`
+
+**Best Practices:**
+
+* Keep the specification DRY (Don't Repeat Yourself) by using references (`$ref`) to reuse components.
+* Include examples in your schema and response definitions to make the documentation more helpful.
+* Use tags to group related operations for better organization in the generated documentation.
+* Maintain backward compatibility when evolving your API specification.
+* Document security schemes and apply them consistently across operations.

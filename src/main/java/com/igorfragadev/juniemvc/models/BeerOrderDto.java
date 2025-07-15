@@ -20,7 +20,9 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class BeerOrderDto {
+    //read only
     private Integer id;
+    //read only
     private Integer version;
     
     @NotBlank(message = "Customer reference is required")
@@ -31,7 +33,10 @@ public class BeerOrderDto {
     private BigDecimal paymentAmount;
     
     private String status;
+
+    //read only
     private LocalDateTime createdDate;
+    //read only
     private LocalDateTime updatedDate;
     
     @Builder.Default
