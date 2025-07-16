@@ -23,6 +23,7 @@ class BeerOrderMapperTest {
     private final BeerOrderMapper beerOrderMapper = Mappers.getMapper(BeerOrderMapper.class);
     private final BeerOrderLineMapper beerOrderLineMapper = Mappers.getMapper(BeerOrderLineMapper.class);
     private final BeerMapper beerMapper = Mappers.getMapper(BeerMapper.class);
+    private final CustomerMapper customerMapper = Mappers.getMapper(CustomerMapper.class);
 
     private BeerOrder testBeerOrder;
     private BeerOrderDto testBeerOrderDto;
@@ -113,6 +114,9 @@ class BeerOrderMapperTest {
     private void injectMapperDependencies() {
         // Inject BeerOrderLineMapper into BeerOrderMapperImpl
         ReflectionTestUtils.setField(beerOrderMapper, "beerOrderLineMapper", beerOrderLineMapper);
+
+        // Inject CustomerMapper into BeerOrderMapperImpl
+        ReflectionTestUtils.setField(beerOrderMapper, "customerMapper", customerMapper);
 
         // Inject BeerMapper into BeerOrderLineMapperImpl
         ReflectionTestUtils.setField(beerOrderLineMapper, "beerMapper", beerMapper);

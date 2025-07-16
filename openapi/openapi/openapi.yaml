@@ -48,11 +48,14 @@ tags:
     description: "Operations for managing beer products."
   - name: BeerOrder
     description: "Operations for managing beer orders."
+  - name: Customer
+    description: "Operations for managing customers."
 x-tagGroups:
   - name: General
     tags:
       - Beer
       - BeerOrder
+      - Customer
 servers:
   - url: https://{tenant}/api/v1
     variables:
@@ -69,6 +72,10 @@ paths:
     $ref: 'paths/beer-orders.yaml'
   '/api/v1/beer-orders/{orderId}':
     $ref: 'paths/beer-orders_{orderId}.yaml'
+  '/api/v1/customers':
+    $ref: 'paths/customers.yaml'
+  '/api/v1/customers/{customerId}':
+    $ref: 'paths/customers_{customerId}.yaml'
 components:
   securitySchemes:
     main_auth:

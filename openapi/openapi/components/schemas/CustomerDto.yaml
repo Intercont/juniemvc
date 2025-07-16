@@ -1,0 +1,77 @@
+type: object
+description: "Data Transfer Object representing a customer with contact and address information"
+required:
+  - name
+  - addressLine1
+  - city
+  - state
+  - postalCode
+properties:
+  id:
+    description: "Unique identifier for the customer (read-only)"
+    type: integer
+    format: int32
+    readOnly: true
+    example: 1
+  version:
+    description: "Version number for optimistic locking (read-only)"
+    type: integer
+    format: int32
+    readOnly: true
+    example: 1
+  name:
+    description: "Name of the customer (required, cannot be blank)"
+    type: string
+    minLength: 1
+    example: "John Doe"
+  email:
+    description: "Email address of the customer"
+    type: [string, "null"]
+    format: email
+    example: "john.doe@example.com"
+  phone:
+    description: "Phone number of the customer"
+    type: [string, "null"]
+    example: "+1-555-123-4567"
+  addressLine1:
+    description: "First line of the customer's address (required, cannot be blank)"
+    type: string
+    minLength: 1
+    example: "123 Main St"
+  addressLine2:
+    description: "Second line of the customer's address (optional)"
+    type: [string, "null"]
+    example: "Apt 4B"
+  city:
+    description: "City of the customer's address (required, cannot be blank)"
+    type: string
+    minLength: 1
+    example: "Anytown"
+  state:
+    description: "State/province of the customer's address (required, cannot be blank)"
+    type: string
+    minLength: 1
+    example: "CA"
+  postalCode:
+    description: "Postal code of the customer's address (required, cannot be blank)"
+    type: string
+    minLength: 1
+    example: "12345"
+  createdAt:
+    description: "Date and time when the customer was created (read-only)"
+    type: string
+    format: date-time
+    readOnly: true
+    example: "2023-01-15T12:00:00Z"
+  updatedAt:
+    description: "Date and time when the customer was last updated (read-only)"
+    type: string
+    format: date-time
+    readOnly: true
+    example: "2023-01-20T15:30:00Z"
+  beerOrders:
+    description: "Orders placed by this customer"
+    type: array
+    items:
+      $ref: './BeerOrderDto.yaml'
+    default: []
