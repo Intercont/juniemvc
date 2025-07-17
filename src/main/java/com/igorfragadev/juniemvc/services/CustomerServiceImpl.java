@@ -50,15 +50,7 @@ public class CustomerServiceImpl implements CustomerService {
     public Optional<CustomerDto> updateCustomer(Integer id, CustomerDto customerDto) {
         return customerRepository.findById(id)
                 .map(existingCustomer -> {
-                    Customer customer = customerMapper.customerDtoToCustomer(customerDto);
-                    existingCustomer.setName(customer.getName());
-                    existingCustomer.setEmail(customer.getEmail());
-                    existingCustomer.setPhone(customer.getPhone());
-                    existingCustomer.setAddressLine1(customer.getAddressLine1());
-                    existingCustomer.setAddressLine2(customer.getAddressLine2());
-                    existingCustomer.setCity(customer.getCity());
-                    existingCustomer.setState(customer.getState());
-                    existingCustomer.setPostalCode(customer.getPostalCode());
+                    customerMapper.updateCustomerFromDto(customerDto, existingCustomer);
                     return customerRepository.save(existingCustomer);
                 })
                 .map(customerMapper::customerToCustomerDto);

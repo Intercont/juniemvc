@@ -185,17 +185,6 @@ class CustomerServiceImplTest {
                 .postalCode("12345")
                 .build();
 
-        Customer customerToUpdate = Customer.builder()
-                .name("John Updated")
-                .email("john.updated@example.com")
-                .phone("+1-555-123-4567")
-                .addressLine1("123 Main St")
-                .addressLine2("Apt 5C")
-                .city("Anytown")
-                .state("CA")
-                .postalCode("12345")
-                .build();
-
         Customer existingCustomer = Customer.builder()
                 .id(1)
                 .name("John Doe")
@@ -232,7 +221,6 @@ class CustomerServiceImplTest {
                 .postalCode("12345")
                 .build();
 
-        given(customerMapper.customerDtoToCustomer(customerDtoToUpdate)).willReturn(customerToUpdate);
         given(customerRepository.findById(1)).willReturn(Optional.of(existingCustomer));
         given(customerRepository.save(any(Customer.class))).willReturn(updatedCustomer);
         given(customerMapper.customerToCustomerDto(updatedCustomer)).willReturn(updatedCustomerDto);
@@ -245,7 +233,7 @@ class CustomerServiceImplTest {
         assertThat(result.get().getId()).isEqualTo(1);
         assertThat(result.get().getName()).isEqualTo("John Updated");
         assertThat(result.get().getEmail()).isEqualTo("john.updated@example.com");
-        verify(customerMapper, times(1)).customerDtoToCustomer(customerDtoToUpdate);
+        verify(customerMapper, times(1)).updateCustomerFromDto(customerDtoToUpdate, existingCustomer);
         verify(customerRepository, times(1)).findById(1);
         verify(customerRepository, times(1)).save(any(Customer.class));
         verify(customerMapper, times(1)).customerToCustomerDto(updatedCustomer);

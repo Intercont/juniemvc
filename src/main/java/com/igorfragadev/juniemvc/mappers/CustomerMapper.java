@@ -4,6 +4,7 @@ import com.igorfragadev.juniemvc.entities.Customer;
 import com.igorfragadev.juniemvc.models.CustomerDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface CustomerMapper {
@@ -15,4 +16,10 @@ public interface CustomerMapper {
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "beerOrders", ignore = true)
     Customer customerDtoToCustomer(CustomerDto customerDto);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "beerOrders", ignore = true)
+    void updateCustomerFromDto(CustomerDto customerDto, @MappingTarget Customer customer);
 }
