@@ -5,12 +5,13 @@ import com.igorfragadev.juniemvc.models.BeerOrderDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {BeerOrderLineMapper.class})
+@Mapper(componentModel = "spring", uses = {BeerOrderLineMapper.class, CustomerMapper.class})
 public interface BeerOrderMapper {
     BeerOrderDto beerOrderToBeerOrderDto(BeerOrder beerOrder);
-    
+
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "updatedDate", ignore = true)
+    @Mapping(target = "customer", ignore = true)
     BeerOrder beerOrderDtoToBeerOrder(BeerOrderDto beerOrderDto);
 }

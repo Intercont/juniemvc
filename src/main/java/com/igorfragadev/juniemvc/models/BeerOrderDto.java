@@ -24,21 +24,23 @@ public class BeerOrderDto {
     private Integer id;
     //read only
     private Integer version;
-    
+
+    private CustomerDto customer;
+
     @NotBlank(message = "Customer reference is required")
     private String customerRef;
-    
+
     @NotNull(message = "Payment amount is required")
     @Positive(message = "Payment amount must be positive")
     private BigDecimal paymentAmount;
-    
+
     private String status;
 
     //read only
     private LocalDateTime createdDate;
     //read only
     private LocalDateTime updatedDate;
-    
+
     @Builder.Default
     private List<BeerOrderLineDto> beerOrderLines = new ArrayList<>();
 }

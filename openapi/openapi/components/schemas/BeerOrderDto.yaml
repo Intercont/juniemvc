@@ -16,6 +16,9 @@ properties:
     format: int32
     readOnly: true
     example: 1
+  customer:
+    description: "Customer who placed the order"
+    $ref: './CustomerDto.yaml'
   customerRef:
     description: "Customer reference for the order (required, cannot be blank)"
     type: string

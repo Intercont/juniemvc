@@ -1,15 +1,13 @@
 package com.igorfragadev.juniemvc.entities;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +17,6 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +27,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@jakarta.persistence.Table(name = "beer_order")
-public class BeerOrder {
+@Table(name = "customer")
+public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,31 +37,40 @@ public class BeerOrder {
     @Version
     private Integer version;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @Column(nullable = false)
+    private String name;
 
-    private String customerRef;
+    private String email;
+    private String phone;
 
-    @Column(precision = 19, scale = 2)
-    private BigDecimal paymentAmount;
+    @Column(nullable = false)
+    private String addressLine1;
 
-    private String status;
+    private String addressLine2;
+
+    @Column(nullable = false)
+    private String city;
+
+    @Column(nullable = false)
+    private String state;
+
+    @Column(nullable = false)
+    private String postalCode;
 
     @CreationTimestamp
     @Column(updatable = false)
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updatedDate;
+    private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "beerOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     @Builder.Default
-    private List<BeerOrderLine> beerOrderLines = new ArrayList<>();
+    private List<BeerOrder> beerOrders = new ArrayList<>();
 
     // Helper method to maintain bidirectional relationship
-    public void addBeerOrderLine(BeerOrderLine beerOrderLine) {
-        beerOrderLines.add(beerOrderLine);
-        beerOrderLine.setBeerOrder(this);
+    public void addBeerOrder(BeerOrder beerOrder) {
+        beerOrders.add(beerOrder);
+        beerOrder.setCustomer(this);
     }
 }

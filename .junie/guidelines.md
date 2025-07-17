@@ -188,6 +188,8 @@ logger.atDebug()
 * Place migration scripts in the default location: `src/main/resources/db/migration`.
 * Follow the Flyway version naming convention: `V{version_number}__{description}.sql` (e.g., `V1__create_tables.sql`, `V2__add_indexes.sql`).
 * Keep each migration script focused on a specific change to make rollbacks and troubleshooting easier.
+* Use H2 compliant SQL syntax in your migration scripts to ensure compatibility with the H2 database used in tests.
+* When altering tables to add a property with a foreign key constraint, add the new column first and then add the foreign key constraint in a second SQL statement.
 
 **Explanation:**
 
@@ -246,3 +248,19 @@ logger.atDebug()
 * Use tags to group related operations for better organization in the generated documentation.
 * Maintain backward compatibility when evolving your API specification.
 * Document security schemes and apply them consistently across operations.
+
+## 17. Use Project Lombok
+* Use Lombok to reduce boilerplate code.
+* Enable annotation processing for your IDE to generate boilerplate code for you.
+* When adding builder to a class, if the class extends another class, add `@SuperBuilder` for the builder.
+
+## 18. Use Mapstruct for Type Conversions
+* Use Mapstruct to convert between domain objects and DTOs.
+* Use `@Mapper` to configure the mapping between the two classes.
+* Use `@Mapping` to configure the mapping between the two fields.
+* After modifying a Mapper, recompile the project to generate the new Mapper implementation.
+* Use Mappers to update existing entities.
+
+## 19. Service Operations
+* When updating existing entities, use Mappers to update existing entities. The entity should be fetched from the database
+  and then updated using the mapper prior to saving the entity back to the database.

@@ -1,0 +1,107 @@
+get:
+  tags:
+    - Customer
+  summary: Get all customers
+  description: "Returns a list of all customers in the system."
+  operationId: getAllCustomers
+  security:
+    - api_key: []
+  responses:
+    '200':
+      description: "Successfully retrieved the list of customers"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../components/schemas/CustomerDto.yaml'
+          example:
+            - id: 1
+              version: 1
+              name: "John Doe"
+              email: "john.doe@example.com"
+              phone: "+1-555-123-4567"
+              addressLine1: "123 Main St"
+              addressLine2: "Apt 4B"
+              city: "Anytown"
+              state: "CA"
+              postalCode: "12345"
+              createdAt: "2023-01-15T12:00:00Z"
+              updatedAt: "2023-01-20T15:30:00Z"
+            - id: 2
+              version: 1
+              name: "Jane Smith"
+              email: "jane.smith@example.com"
+              phone: "+1-555-987-6543"
+              addressLine1: "456 Oak Ave"
+              city: "Somewhere"
+              state: "NY"
+              postalCode: "67890"
+              createdAt: "2023-01-16T10:00:00Z"
+              updatedAt: "2023-01-21T14:30:00Z"
+    '400':
+      description: "Bad request"
+    '401':
+      description: "Unauthorized"
+
+post:
+  tags:
+    - Customer
+  summary: Create a new customer
+  description: "Creates a new customer in the system."
+  operationId: createCustomer
+  security:
+    - api_key: []
+  requestBody:
+    description: "Customer object to be created"
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/CustomerDto.yaml'
+        example:
+          name: "John Doe"
+          email: "john.doe@example.com"
+          phone: "+1-555-123-4567"
+          addressLine1: "123 Main St"
+          addressLine2: "Apt 4B"
+          city: "Anytown"
+          state: "CA"
+          postalCode: "12345"
+  responses:
+    '201':
+      description: "Successfully created a new customer"
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/CustomerDto.yaml'
+          example:
+            id: 1
+            version: 1
+            name: "John Doe"
+            email: "john.doe@example.com"
+            phone: "+1-555-123-4567"
+            addressLine1: "123 Main St"
+            addressLine2: "Apt 4B"
+            city: "Anytown"
+            state: "CA"
+            postalCode: "12345"
+            createdAt: "2023-01-15T12:00:00Z"
+            updatedAt: "2023-01-15T12:00:00Z"
+    '400':
+      description: "Invalid customer data provided"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Validation failed"
+              errors:
+                type: array
+                items:
+                  type: string
+                example: ["Name is required", "Address line 1 is required"]
+    '401':
+      description: "Unauthorized"
