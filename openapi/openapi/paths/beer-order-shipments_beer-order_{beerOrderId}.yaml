@@ -1,0 +1,49 @@
+parameters:
+  - name: beerOrderId
+    in: path
+    description: "ID of the beer order to get shipments for"
+    required: true
+    schema:
+      type: integer
+      format: int32
+
+get:
+  tags:
+    - BeerOrderShipment
+  summary: Get shipments by beer order ID
+  description: "Returns a list of shipments for a specific beer order."
+  operationId: getShipmentsByBeerOrderId
+  security:
+    - api_key: []
+  responses:
+    '200':
+      description: "Successfully retrieved the list of shipments for the beer order"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../components/schemas/BeerOrderShipmentDto.yaml'
+          example:
+            - id: 1
+              version: 1
+              beerOrderId: 1
+              shipmentDate: "2023-01-20"
+              carrier: "UPS"
+              trackingNumber: "1Z999AA10123456784"
+              createdDate: "2023-01-20T15:30:00Z"
+              updatedDate: "2023-01-20T15:30:00Z"
+            - id: 3
+              version: 1
+              beerOrderId: 1
+              shipmentDate: "2023-01-22"
+              carrier: "USPS"
+              trackingNumber: "USPS1234567890"
+              createdDate: "2023-01-22T09:00:00Z"
+              updatedDate: "2023-01-22T09:00:00Z"
+    '400':
+      description: "Bad request"
+    '401':
+      description: "Unauthorized"
+    '404':
+      description: "Beer order not found"

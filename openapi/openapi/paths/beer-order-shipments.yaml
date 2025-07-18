@@ -1,0 +1,92 @@
+get:
+  tags:
+    - BeerOrderShipment
+  summary: Get all beer order shipments
+  description: "Returns a list of all beer order shipments in the system."
+  operationId: getAllBeerOrderShipments
+  security:
+    - api_key: []
+  responses:
+    '200':
+      description: "Successfully retrieved the list of beer order shipments"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../components/schemas/BeerOrderShipmentDto.yaml'
+          example:
+            - id: 1
+              version: 1
+              beerOrderId: 1
+              shipmentDate: "2023-01-20"
+              carrier: "UPS"
+              trackingNumber: "1Z999AA10123456784"
+              createdDate: "2023-01-20T15:30:00Z"
+              updatedDate: "2023-01-20T15:30:00Z"
+            - id: 2
+              version: 1
+              beerOrderId: 2
+              shipmentDate: "2023-01-21"
+              carrier: "FedEx"
+              trackingNumber: "9876543210"
+              createdDate: "2023-01-21T10:00:00Z"
+              updatedDate: "2023-01-21T10:00:00Z"
+    '400':
+      description: "Bad request"
+    '401':
+      description: "Unauthorized"
+
+post:
+  tags:
+    - BeerOrderShipment
+  summary: Create a new beer order shipment
+  description: "Creates a new beer order shipment in the system with beer order ID, shipment date, carrier, and tracking number."
+  operationId: createBeerOrderShipment
+  security:
+    - api_key: []
+  requestBody:
+    description: "Beer order shipment object to be created"
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/BeerOrderShipmentDto.yaml'
+        example:
+          beerOrderId: 1
+          shipmentDate: "2023-01-20"
+          carrier: "UPS"
+          trackingNumber: "1Z999AA10123456784"
+  responses:
+    '201':
+      description: "Successfully created a new beer order shipment"
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/BeerOrderShipmentDto.yaml'
+          example:
+            id: 1
+            version: 1
+            beerOrderId: 1
+            shipmentDate: "2023-01-20"
+            carrier: "UPS"
+            trackingNumber: "1Z999AA10123456784"
+            createdDate: "2023-01-20T15:30:00Z"
+            updatedDate: "2023-01-20T15:30:00Z"
+    '400':
+      description: "Invalid beer order shipment data provided"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Validation failed"
+              errors:
+                type: array
+                items:
+                  type: string
+                example: ["Beer order ID is required"]
+    '401':
+      description: "Unauthorized"

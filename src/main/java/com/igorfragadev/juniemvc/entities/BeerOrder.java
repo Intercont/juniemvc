@@ -62,9 +62,19 @@ public class BeerOrder {
     @Builder.Default
     private List<BeerOrderLine> beerOrderLines = new ArrayList<>();
 
+    @OneToMany(mappedBy = "beerOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<BeerOrderShipment> beerOrderShipments = new ArrayList<>();
+
     // Helper method to maintain bidirectional relationship
     public void addBeerOrderLine(BeerOrderLine beerOrderLine) {
         beerOrderLines.add(beerOrderLine);
         beerOrderLine.setBeerOrder(this);
+    }
+
+    // Helper method to maintain bidirectional relationship
+    public void addBeerOrderShipment(BeerOrderShipment beerOrderShipment) {
+        beerOrderShipments.add(beerOrderShipment);
+        beerOrderShipment.setBeerOrder(this);
     }
 }
