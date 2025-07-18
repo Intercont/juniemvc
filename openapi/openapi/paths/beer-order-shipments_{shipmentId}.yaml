@@ -1,0 +1,109 @@
+parameters:
+  - name: shipmentId
+    in: path
+    description: "ID of the beer order shipment to operate on"
+    required: true
+    schema:
+      type: integer
+      format: int32
+
+get:
+  tags:
+    - BeerOrderShipment
+  summary: Get a beer order shipment by ID
+  description: "Returns a single beer order shipment by its ID."
+  operationId: getBeerOrderShipmentById
+  security:
+    - api_key: []
+  responses:
+    '200':
+      description: "Successfully retrieved the beer order shipment"
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/BeerOrderShipmentDto.yaml'
+          example:
+            id: 1
+            version: 1
+            beerOrderId: 1
+            shipmentDate: "2023-01-20"
+            carrier: "UPS"
+            trackingNumber: "1Z999AA10123456784"
+            createdDate: "2023-01-20T15:30:00Z"
+            updatedDate: "2023-01-20T15:30:00Z"
+    '404':
+      description: "Beer order shipment not found"
+    '401':
+      description: "Unauthorized"
+
+put:
+  tags:
+    - BeerOrderShipment
+  summary: Update a beer order shipment
+  description: "Updates an existing beer order shipment with new information."
+  operationId: updateBeerOrderShipment
+  security:
+    - api_key: []
+  requestBody:
+    description: "Updated beer order shipment data"
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/BeerOrderShipmentDto.yaml'
+        example:
+          beerOrderId: 1
+          shipmentDate: "2023-01-21"
+          carrier: "FedEx"
+          trackingNumber: "9876543210"
+  responses:
+    '200':
+      description: "Successfully updated the beer order shipment"
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/BeerOrderShipmentDto.yaml'
+          example:
+            id: 1
+            version: 2
+            beerOrderId: 1
+            shipmentDate: "2023-01-21"
+            carrier: "FedEx"
+            trackingNumber: "9876543210"
+            createdDate: "2023-01-20T15:30:00Z"
+            updatedDate: "2023-01-21T10:00:00Z"
+    '400':
+      description: "Invalid beer order shipment data provided"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Validation failed"
+              errors:
+                type: array
+                items:
+                  type: string
+                example: ["Beer order ID is required"]
+    '404':
+      description: "Beer order shipment not found"
+    '401':
+      description: "Unauthorized"
+
+delete:
+  tags:
+    - BeerOrderShipment
+  summary: Delete a beer order shipment
+  description: "Deletes a beer order shipment by its ID."
+  operationId: deleteBeerOrderShipment
+  security:
+    - api_key: []
+  responses:
+    '204':
+      description: "Successfully deleted the beer order shipment"
+    '404':
+      description: "Beer order shipment not found"
+    '401':
+      description: "Unauthorized"
