@@ -3,6 +3,9 @@ package com.igorfragadev.juniemvc.controllers;
 import com.igorfragadev.juniemvc.models.BeerDto;
 import com.igorfragadev.juniemvc.services.BeerService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +25,16 @@ public class BeerController {
     @GetMapping
     public ResponseEntity<List<BeerDto>> getAllBeers() {
         return new ResponseEntity<>(beerService.getAllBeers(), HttpStatus.OK);
+    }
+
+    @GetMapping(params = {"page", "size"})
+    public ResponseEntity<Page<BeerDto>> getAllBeers(
+            @RequestParam(required = false) String beerName,
+            @RequestParam(required = false) String beerStyle,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return new ResponseEntity<>(beerService.getAllBeers(beerName, beerStyle, pageable), HttpStatus.OK);
     }
 
     @GetMapping("/{beerId}")

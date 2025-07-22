@@ -1,6 +1,8 @@
 package com.igorfragadev.juniemvc.services;
 
 import com.igorfragadev.juniemvc.models.BeerDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +14,15 @@ public interface BeerService {
      * @return List of all beers
      */
     List<BeerDto> getAllBeers();
+
+    /**
+     * Get all beers with optional filtering by beer name and beer style
+     * @param beerName The beer name to filter by (can be null)
+     * @param beerStyle The beer style to filter by (can be null)
+     * @param pageable The pagination information
+     * @return A page of beers
+     */
+    Page<BeerDto> getAllBeers(String beerName, String beerStyle, Pageable pageable);
 
     /**
      * Get a beer by its ID
