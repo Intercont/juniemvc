@@ -2,6 +2,7 @@ package com.igorfragadev.juniemvc.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.igorfragadev.juniemvc.models.BeerDto;
+import com.igorfragadev.juniemvc.models.BeerPathDto;
 import com.igorfragadev.juniemvc.services.BeerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -322,5 +323,56 @@ class BeerControllerTest {
                 .andExpect(jsonPath("$.content[0].id", is(1)))
                 .andExpect(jsonPath("$.content[0].beerName", is("Test Beer")))
                 .andExpect(jsonPath("$.content[0].beerStyle", is("IPA")));
+    }
+
+    @Test
+    void patchBeer() throws Exception {
+        // Create a BeerPathDto with only the fields to update
+        BeerPathDto beerPathDto = BeerPathDto.builder()
+                .beerName("Patched Beer")
+                .price(new BigDecimal("16.99"))
+                .build();
+
+        // Create the expected updated BeerDto
+        BeerDto updatedBeerDto = BeerDto.builder()
+                .id(1)
+                .beerName("Patched Beer")
+                .beerStyle("IPA") // Unchanged
+                .upc("123456") // Unchanged
+                .price(new BigDecimal("16.99"))
+                .quantityOnHand(100) // Unchanged
+                .build();
+
+        // Mock the service method
+        given(beerService.patchBeer(anyInt(), any(BeerPathDto.class))).willReturn(Optional.of(updatedBeerDto));
+
+        // Perform the request and verify the response
+        mockMvc.perform(patch("/api/v1/beers/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(beerPathDto)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.beerName", is("Patched Beer")))
+                .andExpect(jsonPath("$.beerStyle", is("IPA")))
+                .andExpect(jsonPath("$.price", is(16.99)));
+    }
+
+    @Test
+    void patchBeerNotFound() throws Exception {
+        // Create a BeerPathDto with only the fields to update
+        BeerPathDto beerPathDto = BeerPathDto.builder()
+                .beerName("Patched Beer")
+                .price(new BigDecimal("16.99"))
+                .build();
+
+        // Mock the service method to return empty (beer not found)
+        given(beerService.patchBeer(anyInt(), any(BeerPathDto.class))).willReturn(Optional.empty());
+
+        // Perform the request and verify the response
+        mockMvc.perform(patch("/api/v1/beers/999")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(beerPathDto)))
+                .andExpect(status().isNotFound());
     }
 }

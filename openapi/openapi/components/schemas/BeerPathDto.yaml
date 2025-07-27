@@ -1,11 +1,5 @@
 type: object
-description: "Data Transfer Object representing a beer product"
-required:
-  - beerName
-  - beerStyle
-  - upc
-  - quantityOnHand
-  - price
+description: "Data Transfer Object for PATCH operations on a beer product. Contains the same properties as the Beer entity without any constraints, and ignores createdDate and updatedDate properties."
 properties:
   id:
     description: "Unique identifier for the beer"
@@ -22,45 +16,26 @@ properties:
   beerName:
     description: "Name of the beer product"
     type: string
-    minLength: 1
     example: "Mango Bobs"
   beerStyle:
     description: "Style of the beer (ALE, PALE_ALE, IPA, etc.)"
     type: string
-    minLength: 1
     example: "IPA"
   upc:
     description: "Universal Product Code, a 13-digit number assigned to each unique beer product by the Federal Bar Association"
     type: string
-    minLength: 13
-    maxLength: 13
-    pattern: "^[0-9]{13}$"
     example: "0631234200036"
   quantityOnHand:
     description: "Current quantity of beer available in stock"
     type: integer
     format: int32
-    minimum: 0
     example: 122
   price:
     description: "Price of the beer"
     type: number
     format: decimal
-    minimum: 0.01
     example: 12.99
   imageUrl:
     description: "URL to the image of the beer"
     type: string
     example: "https://example.com/images/beer123.jpg"
-  createdDate:
-    description: "Date and time when the beer was created in the system"
-    type: string
-    format: date-time
-    readOnly: true
-    example: "2023-01-15T12:00:00Z"
-  updatedDate:
-    description: "Date and time when the beer was last updated"
-    type: string
-    format: date-time
-    readOnly: true
-    example: "2023-01-20T15:30:00Z"

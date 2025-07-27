@@ -3,6 +3,7 @@ package com.igorfragadev.juniemvc.services;
 import com.igorfragadev.juniemvc.entities.Beer;
 import com.igorfragadev.juniemvc.mappers.BeerMapper;
 import com.igorfragadev.juniemvc.models.BeerDto;
+import com.igorfragadev.juniemvc.models.BeerPathDto;
 import com.igorfragadev.juniemvc.repositories.BeerRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -98,5 +99,17 @@ public class BeerServiceImpl implements BeerService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    @Transactional
+    public Optional<BeerDto> patchBeer(Integer id, BeerPathDto beerPathDto) {
+        return beerRepository.findById(id)
+                .map(existingBeer -> {
+                    // Apply non-null properties from beerPathDto to existingBeer
+                    Beer updatedBeer = beerMapper.updateBeerFromBeerPathDto(beerPathDto, existingBeer);
+                    return beerRepository.save(updatedBeer);
+                })
+                .map(beerMapper::beerToBeerDto);
     }
 }

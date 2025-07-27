@@ -1,6 +1,7 @@
 package com.igorfragadev.juniemvc.services;
 
 import com.igorfragadev.juniemvc.models.BeerDto;
+import com.igorfragadev.juniemvc.models.BeerPathDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -52,4 +53,12 @@ public interface BeerService {
      * @return true if the beer was deleted, false if not found
      */
     boolean deleteBeer(Integer id);
+
+    /**
+     * Partially update a beer with the provided data
+     * @param id The beer ID
+     * @param beerPathDto The partial beer data to update
+     * @return Optional containing the updated beer if found
+     */
+    Optional<BeerDto> patchBeer(Integer id, BeerPathDto beerPathDto);
 }
