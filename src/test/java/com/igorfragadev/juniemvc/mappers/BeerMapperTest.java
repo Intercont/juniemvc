@@ -26,6 +26,7 @@ class BeerMapperTest {
                 .upc("123456")
                 .price(new BigDecimal("12.99"))
                 .quantityOnHand(100)
+                .imageUrl("http://example.com/image.jpg")
                 .createdDate(now)
                 .updatedDate(now)
                 .build();
@@ -42,6 +43,7 @@ class BeerMapperTest {
         assertThat(beerDto.getUpc()).isEqualTo(beer.getUpc());
         assertThat(beerDto.getPrice()).isEqualTo(beer.getPrice());
         assertThat(beerDto.getQuantityOnHand()).isEqualTo(beer.getQuantityOnHand());
+        assertThat(beerDto.getImageUrl()).isEqualTo(beer.getImageUrl());
         assertThat(beerDto.getCreatedDate()).isEqualTo(beer.getCreatedDate());
         assertThat(beerDto.getUpdatedDate()).isEqualTo(beer.getUpdatedDate());
     }
@@ -58,6 +60,7 @@ class BeerMapperTest {
                 .upc("123456")
                 .price(new BigDecimal("12.99"))
                 .quantityOnHand(100)
+                .imageUrl("http://example.com/image.jpg")
                 .createdDate(now)
                 .updatedDate(now)
                 .build();
@@ -78,5 +81,6 @@ class BeerMapperTest {
         assertThat(beer.getUpc()).isEqualTo(beerDto.getUpc());
         assertThat(beer.getPrice()).isEqualTo(beerDto.getPrice());
         assertThat(beer.getQuantityOnHand()).isEqualTo(beerDto.getQuantityOnHand());
+        assertThat(beer.getImageUrl()).isEqualTo(beerDto.getImageUrl());
     }
 }

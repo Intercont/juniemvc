@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 public class BeerDto {
     private Integer id;
     private Integer version;
-    
+
     @NotBlank(message = "Beer name is required")
     private String beerName;
 
@@ -31,15 +31,17 @@ public class BeerDto {
     // Universal Product Code, a 13-digit number assigned to each unique beer product by the Federal Bar Association
     @NotBlank(message = "UPC is required")
     private String upc;
-    
+
     @NotNull(message = "Quantity on hand is required")
     @Positive(message = "Quantity on hand must be positive")
     private Integer quantityOnHand;
-    
+
     @NotNull(message = "Price is required")
     @Positive(message = "Price must be positive")
     private BigDecimal price;
-    
+
+    private String imageUrl;
+
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
 }

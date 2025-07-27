@@ -48,6 +48,10 @@ properties:
     format: decimal
     minimum: 0.01
     example: 12.99
+  imageUrl:
+    description: "URL to the image of the beer"
+    type: string
+    example: "https://example.com/images/beer123.jpg"
   createdDate:
     description: "Date and time when the beer was created in the system"
     type: string

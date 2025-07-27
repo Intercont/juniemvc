@@ -42,6 +42,7 @@ public class Beer {
     private String upc;
     private Integer quantityOnHand;
     private BigDecimal price;
+    private String imageUrl;
 
     @CreationTimestamp
     @Column(updatable = false)
