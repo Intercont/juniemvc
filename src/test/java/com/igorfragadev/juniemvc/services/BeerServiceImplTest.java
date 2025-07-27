@@ -3,6 +3,7 @@ package com.igorfragadev.juniemvc.services;
 import com.igorfragadev.juniemvc.entities.Beer;
 import com.igorfragadev.juniemvc.mappers.BeerMapper;
 import com.igorfragadev.juniemvc.models.BeerDto;
+import com.igorfragadev.juniemvc.models.BeerPathDto;
 import com.igorfragadev.juniemvc.repositories.BeerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -366,5 +367,80 @@ class BeerServiceImplTest {
         verify(beerRepository, times(1)).findAllByBeerNameContainingIgnoreCaseAndBeerStyleContainingIgnoreCase(
                 beerName, beerStyle, pageable);
         verify(beerMapper, times(1)).beerToBeerDto(testBeer);
+    }
+
+    @Test
+    void patchBeer() {
+        // given
+        BeerPathDto beerPathDto = BeerPathDto.builder()
+                .beerName("Patched Beer")
+                .price(new BigDecimal("16.99"))
+                .build();
+
+        Beer existingBeer = Beer.builder()
+                .id(1)
+                .beerName("Test Beer")
+                .beerStyle("IPA")
+                .upc("123456")
+                .price(new BigDecimal("12.99"))
+                .quantityOnHand(100)
+                .build();
+
+        Beer patchedBeer = Beer.builder()
+                .id(1)
+                .beerName("Patched Beer")
+                .beerStyle("IPA")
+                .upc("123456")
+                .price(new BigDecimal("16.99"))
+                .quantityOnHand(100)
+                .build();
+
+        BeerDto patchedBeerDto = BeerDto.builder()
+                .id(1)
+                .beerName("Patched Beer")
+                .beerStyle("IPA")
+                .upc("123456")
+                .price(new BigDecimal("16.99"))
+                .quantityOnHand(100)
+                .build();
+
+        given(beerRepository.findById(1)).willReturn(Optional.of(existingBeer));
+        given(beerMapper.updateBeerFromBeerPathDto(beerPathDto, existingBeer)).willReturn(patchedBeer);
+        given(beerRepository.save(patchedBeer)).willReturn(patchedBeer);
+        given(beerMapper.beerToBeerDto(patchedBeer)).willReturn(patchedBeerDto);
+
+        // when
+        Optional<BeerDto> result = beerService.patchBeer(1, beerPathDto);
+
+        // then
+        assertThat(result).isPresent();
+        assertThat(result.get().getId()).isEqualTo(1);
+        assertThat(result.get().getBeerName()).isEqualTo("Patched Beer");
+        assertThat(result.get().getBeerStyle()).isEqualTo("IPA"); // Unchanged
+        assertThat(result.get().getPrice()).isEqualTo(new BigDecimal("16.99"));
+        verify(beerRepository, times(1)).findById(1);
+        verify(beerMapper, times(1)).updateBeerFromBeerPathDto(beerPathDto, existingBeer);
+        verify(beerRepository, times(1)).save(patchedBeer);
+        verify(beerMapper, times(1)).beerToBeerDto(patchedBeer);
+    }
+
+    @Test
+    void patchBeerNotFound() {
+        // given
+        BeerPathDto beerPathDto = BeerPathDto.builder()
+                .beerName("Patched Beer")
+                .price(new BigDecimal("16.99"))
+                .build();
+
+        given(beerRepository.findById(999)).willReturn(Optional.empty());
+
+        // when
+        Optional<BeerDto> result = beerService.patchBeer(999, beerPathDto);
+
+        // then
+        assertThat(result).isEmpty();
+        verify(beerRepository, times(1)).findById(999);
+        verify(beerMapper, times(0)).updateBeerFromBeerPathDto(any(), any());
+        verify(beerRepository, times(0)).save(any());
     }
 }

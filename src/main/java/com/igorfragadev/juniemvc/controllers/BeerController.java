@@ -1,6 +1,7 @@
 package com.igorfragadev.juniemvc.controllers;
 
 import com.igorfragadev.juniemvc.models.BeerDto;
+import com.igorfragadev.juniemvc.models.BeerPathDto;
 import com.igorfragadev.juniemvc.services.BeerService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -64,5 +65,19 @@ public class BeerController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    /**
+     * Partially update a beer with the provided data
+     * 
+     * @param beerId The beer ID
+     * @param beerPathDto The partial beer data to update
+     * @return ResponseEntity with the updated beer if found, or NOT_FOUND
+     */
+    @PatchMapping("/{beerId}")
+    public ResponseEntity<BeerDto> patchBeer(@PathVariable("beerId") Integer beerId, @RequestBody BeerPathDto beerPathDto) {
+        return beerService.patchBeer(beerId, beerPathDto)
+                .map(updatedBeer -> new ResponseEntity<>(updatedBeer, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }
